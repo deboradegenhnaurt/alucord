@@ -1,4 +1,6 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import React from 'react';
+import { useRouter } from 'next/router';
 import appConfig from '../config.json';
 
 function GlobalStyle() {
@@ -74,7 +76,9 @@ function Titulo(props) {
 //  export default HomePage
 
 export default function PaginaInicial() {   
-    const username = 'deboradegenhnaurt';
+    //const username = 'deboradegenhnaurt';
+    const [username, setUsername] = React.useState('deboradegenhnaurt');
+    const roteamento = useRouter();
 
     return (
         <>
@@ -105,6 +109,11 @@ export default function PaginaInicial() {
                     {/* Formulário */}
                     <Box
                         as="form"
+                        onSubmit={function (infosDoEvento) {
+                            infosDoEvento.preventDefault();
+                            roteamento.push('chat');
+                            //window.location.href = '/chat';
+                        }}
                         styleSheet={{
                             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                             width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -115,17 +124,33 @@ export default function PaginaInicial() {
                             {appConfig.name}
                         </Text>
 
+                        {/* <input 
+                        type="text"
+                        value={username}
+                        onChange={function (event) {
+                            const valor = event.target.value;
+                            setUsername(valor);
+                        }}
+
+                        /> */}
+                          
+                            
                         <TextField
-                            fullWidth
-                            textFieldColors={{
-                                neutral: {
+                            value={username}
+                            onChange={function (event) {
+                                const valor = event.target.value;                           
+                                setUsername(valor);                          
+                            }}
+                             fullWidth
+                             textFieldColors={{
+                                 neutral: {
                                     textColor: appConfig.theme.colors.neutrals[200],
                                     mainColor: appConfig.theme.colors.neutrals[900],
                                     mainColorHighlight: appConfig.theme.colors.primary[500],
                                     backgroundColor: appConfig.theme.colors.neutrals[800],
-                                },
+                               },
                             }}
-                        />
+                         />                       
                         <Button
                             type='submit'
                             label='Entrar'
@@ -156,14 +181,14 @@ export default function PaginaInicial() {
                             flex: 1,
                             minHeight: '240px',
                         }}
-                    >
+                    >   
                         <Image
                             styleSheet={{
                                 borderRadius: '50%',
                                 marginBottom: '16px',
                             }}
                             src={`https://github.com/${username}.png`}
-                        />
+                        />                       
                         <Text
                             variant="body4"
                             styleSheet={{
